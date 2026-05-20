@@ -2,7 +2,7 @@ import mongoose, { Schema } from "mongoose";
 import bcrypt from "bcryptjs";
 import { IUser } from "@/interfaces/user.interface";
 
-const userSchema = new Schema(
+const userSchema = new Schema<IUser>(
   {
     name: { type: String, required: true },
     email: {
@@ -26,11 +26,11 @@ userSchema.pre("save", async function () {
   this.password = await bcrypt.hash(this.password, 10);
 });
 
-userSchema.methods.matchPassword = function(plain:string){
+userSchema.methods.comparePassword  = function(plain:string){
     return bcrypt.compare(plain,this.password)
 } 
 
-userSchema.methods.toJson = function (){
+userSchema.methods.toJSON = function (){
     const obj = this.toObject()
     delete obj.password
     return obj
