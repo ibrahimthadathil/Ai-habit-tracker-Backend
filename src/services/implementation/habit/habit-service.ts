@@ -18,7 +18,7 @@ export class HabitServce {
     try {
       const filter: Partial<IHabit> = { userId };
       if (includeArchived !== "true") filter.isArchived = false;
-      const habits = await this.habitRepo.findHabit(filter);
+      const habits = await this.habitRepo.getAllHabit(filter);
       if (habits) return { success: true, habits };
       return { success: false };
     } catch (err) {
@@ -58,31 +58,47 @@ export class HabitServce {
       }
       const updatedHabit = await this.habitRepo.update(habitId, habit);
       if (updatedHabit) return { success: true, updatedHabit };
-      else return {success:false,message:"Failed to update"}
+      else return { success: false, message: "Failed to update" };
     } catch (error) {
       throw new Error((error as Error).message);
     }
   }
 
-  async deleteHabit(userId:string,habitId:string){
-    try{
-        const habit = await this.habitRepo.deleteUserHabit(userId,habitId)
-        if(!habit) return{success:false,message:STATUS.NOT_FOUND.message}
-        await this.habitLogRepo.deleteMultiple(userId,habitId)
-        return {success:true,message:'Deleted'}
-    }catch(err){
-        throw new Error((err as Error).message)
+  async deleteHabit(userId: string, habitId: string) {
+    try {
+      const habit = await this.habitRepo.deleteUserHabit(userId, habitId);
+      if (!habit) return { success: false, message: STATUS.NOT_FOUND.message };
+      await this.habitLogRepo.deleteMultiple(userId, habitId);
+      return { success: true, message: "Deleted" };
+    } catch (err) {
+      throw new Error((err as Error).message);
     }
   }
 
-  async archiveHabit(userId:string,habitId:string){
-    try{
-        const habit = await this.habitRepo.findHabit({_id:habitId,userId})
-       if(!habit) return{success:false,message:STATUS.NOT_FOUND.message} 
-       const updatedHabit = await this.habitRepo.updateByUser(userId,habitId,!habit.isArchived)
-       return {success:true,updatedHabit}
-    }catch(erro){
-        throw new Error((erro as Error).message)
+  async archiveHabit(userId: string, habitId: string) {
+    try {
+      const habit = await this.habitRepo.findHabit({ _id: habitId, userId });
+      if (!habit) return { success: false, message: STATUS.NOT_FOUND.message };
+      const updatedHabit = await this.habitRepo.updateByUser(
+        userId,
+        habitId,
+        !habit.isArchived,
+      );
+      return { success: true, updatedHabit };
+    } catch (erro) {
+      throw new Error((erro as Error).message);
+    }
+  }
+
+  async re_orderHabits(orders: string[], userId: string) {
+    try {
+      if (!Array.isArray(orders))
+        return { success: false, message: STATUS.BAD_REQUEST.message };
+      const reordered = await this.habitRepo.reOrderHabit(orders, userId);
+      if (reordered) return { success: true, message: "Reordered" };
+      return { success: false, message: "Failed to Re-order" };
+    } catch (er) {
+      return { success: false, message: (er as Error).message };
     }
   }
 }

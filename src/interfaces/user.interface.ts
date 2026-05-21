@@ -19,5 +19,5 @@ export interface IUser extends Document {
 }
 
 export interface AuthRequest extends Request {
-    user: IUser
+    user?: IUser
 }

@@ -23,9 +23,22 @@ export class HabitRepository extends BaseRepository<IHabit> {
   }
 
   async updateByUser(userId: string, habitId: string, archived: boolean) {
+    console.log(archived,'lll');
+    
     return await HabitModal.findOneAndUpdate(
       { _id: habitId, userId },
       { isArchived: archived },
+    );
+  }
+  async getAllHabit(filter:Partial<IHabit>){
+    return await HabitModal.find(filter)
+  }
+
+  async reOrderHabit(order: string[], userId: string) {
+    return await Promise.all(
+      order.map((id, idx) =>
+        HabitModal.updateOne({ _id: id, userId }, { $set: { order: idx } }),
+      ),
     );
   }
 }
