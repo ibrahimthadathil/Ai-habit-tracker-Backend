@@ -2,7 +2,7 @@ import { STATUS } from "@/const/httpStatus";
 import { AuthRequest } from "@/interfaces/user.interface";
 import { HabitLog } from "@/services/implementation/habit/habit-log-service";
 import { Response } from "express";
-import { Service } from "typedi";
+import Container, { Service } from "typedi";
 
 @Service()
 export class HabitlogController {
@@ -44,8 +44,8 @@ export class HabitlogController {
     try {
       const { success, logs, message } =
         await this.habitLogService.getTodayDate(req.user!._id.toString());
-      if (success) return { success, logs };
-      else return { success, message };
+      if (success) res.status(STATUS.SUCCESS.code).json( { success, logs })
+      else res.status(STATUS.BAD_REQUEST.code).json( { success, message })
     } catch (err) {
       res
         .status(STATUS.SERVER_ERROR.code)
@@ -81,4 +81,38 @@ export class HabitlogController {
         .json({ message: STATUS.SERVER_ERROR.message });
     }
   }
+  async getHabitStatus(req: AuthRequest, res: Response) {
+    try {
+      const { success, message, data } =
+        await this.habitLogService.getHabitStat(
+          req.user!._id.toString(),
+          req.params.id as string,
+        );
+      if (success) res.status(STATUS.SUCCESS.code).json({ success, data });
+      else res.status(STATUS.BAD_REQUEST.code).json({ success, message });
+    } catch (error) {
+      res
+        .status(STATUS.SERVER_ERROR.code)
+        .json({ message: STATUS.SERVER_ERROR.message });
+    }
+  }
+  async getAllStatus(req: AuthRequest, res: Response) {
+    try {
+      const { data, success } = await this.habitLogService.getAllStat(
+        req.user!._id.toString(),
+      );
+      if (success) res.status(STATUS.SUCCESS.code).json({ success, data });
+      else
+        res
+          .status(STATUS.NOT_FOUND.code)
+          .json({ success, message: STATUS.NOT_FOUND.message });
+    } catch (error) {
+      res
+        .status(STATUS.SERVER_ERROR.code)
+        .json({ message: STATUS.SERVER_ERROR.message });
+    }
+  }
 }
+
+
+export const habitLogs_controller = Container.get(HabitlogController)

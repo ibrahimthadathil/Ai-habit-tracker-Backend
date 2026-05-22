@@ -8,7 +8,7 @@ export interface IHabit extends Document {
 
   description: string;
 
-  category: (typeof CATEGORIES)[number] ;
+  category: (typeof CATEGORIES)[number];
 
   frequency: "daily" | "weekly";
 
@@ -21,10 +21,11 @@ export interface IHabit extends Document {
   isArchived: boolean;
 
   order: number;
+  createdAt?: Date;
 }
 
 export interface IHabitLog extends Document {
-  userId: Types.ObjectId |string;
+  userId: Types.ObjectId | string;
   habitId: Types.ObjectId | string;
   completedDate: string;
   notes: string;

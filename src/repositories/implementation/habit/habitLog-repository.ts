@@ -2,7 +2,6 @@ import { Service } from "typedi";
 import { BaseRepository } from "../base-repository";
 import { IHabitLog } from "@/types/habitTypes";
 import { HabitLogmodal } from "@/models/habitLogs";
-import { HabitModal } from "@/models/habit";
 
 @Service()
 export class HabitLogRepository extends BaseRepository<IHabitLog> {
@@ -37,10 +36,13 @@ export class HabitLogRepository extends BaseRepository<IHabitLog> {
     });
   }
 
-  async findAllWithFilter(userId:string,completedate:string){
-    return await HabitModal.find({userId,completedate})
+  async findAllWithFilter(userId:string,completedDate:string){
+    return await HabitLogmodal.find({userId,completedDate})
   }
-  async getAllHabit(filter:any){
-      return await HabitLogmodal.find(filter)
+  async getAllHabit(filter:any,sort?:Record<string,1|-1>){
+      const query= HabitLogmodal.find(filter)
+      if(sort) query.sort(sort)
+      return await query
     }
+    
 }

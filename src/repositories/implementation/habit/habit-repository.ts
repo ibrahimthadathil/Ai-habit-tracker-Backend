@@ -10,8 +10,10 @@ export class HabitRepository extends BaseRepository<IHabit> {
     super(HabitModal);
   }
 
-  async findHabit(filter: QueryFilter<IHabit>) {
-    return await HabitModal.findOne(filter).sort({ order: 1, createdAt: 1 });
+  async findHabit(filter: QueryFilter<IHabit>, sort?: Record<string, 1 | -1>) {
+    let query =  HabitModal.findOne(filter);
+    if (sort) query = query.sort(sort);
+    return await query;
   }
 
   async getHabitCount(userId: string) {
@@ -23,15 +25,13 @@ export class HabitRepository extends BaseRepository<IHabit> {
   }
 
   async updateByUser(userId: string, habitId: string, archived: boolean) {
-    console.log(archived,'lll');
-    
     return await HabitModal.findOneAndUpdate(
       { _id: habitId, userId },
       { isArchived: archived },
     );
   }
-  async getAllHabit(filter:Partial<IHabit>){
-    return await HabitModal.find(filter)
+  async getAllHabit(filter: Partial<IHabit>) {
+    return await HabitModal.find(filter);
   }
 
   async reOrderHabit(order: string[], userId: string) {
