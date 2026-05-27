@@ -25,17 +25,19 @@ export class AuthController implements IAuthControl {
     try {
       const { success, message, token, user } =
         await this.authService.userLogin(req.body);
-        console.log(success,token);
-        
+
       if (success)
         return res
           .status(STATUS.SUCCESS.code)
-          .json({ user,success, token, message: "user Logged in" });
+          .json({ user, success, token, message: "user Logged in" });
       else
         return res.status(STATUS.BAD_REQUEST.code).json({ success, message });
-    } catch (err) {}
+    } catch (err) {
+      res
+        .status(STATUS.SERVER_ERROR.code)
+        .json({ message: STATUS.SERVER_ERROR.message });
+    }
   }
- 
 }
 
 export const auth_controller = Container.get(AuthController);

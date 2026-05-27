@@ -33,4 +33,10 @@ export abstract class BaseRepository<
   async delete(id: string): Promise<void | any> {
     return this.model.findByIdAndDelete(id);
   }
+
+    async getAllWithFilter(filter:any,sort?:Record<string,1|-1>){
+        const query= this.model.find(filter)
+        if(sort) query.sort(sort)
+        return await query
+      }
 }

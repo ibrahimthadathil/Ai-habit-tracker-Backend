@@ -1,6 +1,7 @@
+import { IAIInsight } from "@/types/AiInsights";
 import mongoose, { Schema } from "mongoose";
 
-const aiInsightsSchema = new Schema(
+const aiInsightsSchema = new Schema<IAIInsight>(
   {
     userId: {
       type: mongoose.Schema.Types.ObjectId,
@@ -20,4 +21,4 @@ const aiInsightsSchema = new Schema(
   { timestamps: true },
 );
 
-export const AIModal = mongoose.model("AIInsight", aiInsightsSchema);
+export const AIModal = mongoose.model<IAIInsight>("AIInsight", aiInsightsSchema);
