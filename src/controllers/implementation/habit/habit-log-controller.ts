@@ -16,7 +16,7 @@ export class HabitlogController {
           { habitId, date },
           req.user!._id.toString(),
         );
-      if (success) res.status(STATUS.CREATED.code).json({ log });
+      if (success) res.status(STATUS.CREATED.code).json({  log });
       else res.status(STATUS.NOT_FOUND.code).json({ message, success });
     } catch (error) {
       res
@@ -32,7 +32,7 @@ export class HabitlogController {
         { habitId, date },
         req.user!._id.toString(),
       );
-      if (success) res.status(STATUS.CREATED.code).json({ message });
+      if (success) res.status(STATUS.CREATED.code).json({  message });
       else res.status(STATUS.BAD_REQUEST.code).json({ message });
     } catch (error) {
       res
@@ -44,8 +44,8 @@ export class HabitlogController {
     try {
       const { success, logs, message } =
         await this.habitLogService.getTodayDate(req.user!._id.toString());
-      if (success) res.status(STATUS.SUCCESS.code).json({ logs });
-      else res.status(STATUS.BAD_REQUEST.code).json({ message });
+      if (success) res.status(STATUS.SUCCESS.code).json( {  logs })
+      else res.status(STATUS.BAD_REQUEST.code).json( {  message })
     } catch (err) {
       res
         .status(STATUS.SERVER_ERROR.code)
@@ -55,14 +55,16 @@ export class HabitlogController {
   async getRange(req: AuthRequest, res: Response) {
     try {
       const start = req.query.start as string;
-      const end = req.query.end as string;
+      const end = req.query.end as string;      
       const { success, logs, message } =
         await this.habitLogService.getDaysrange(
           { start, end },
           req.user!._id.toString(),
         );
-      if (success) res.status(STATUS.SUCCESS.code).json({ logs });
-      else res.status(STATUS.BAD_REQUEST.code).json({ message });
+        console.log(logs);
+        
+      if (success) res.json( {  logs });
+      else res.json ({  message });
     } catch (error) {
       res
         .status(STATUS.SERVER_ERROR.code)
@@ -74,7 +76,7 @@ export class HabitlogController {
       const logs = await this.habitLogService.getHeatMap(
         req.user!._id.toString(),
       );
-      res.status(STATUS.SUCCESS.code).json({ success: true, logs });
+      res.status(STATUS.SUCCESS.code).json({  logs });
     } catch (error) {
       res
         .status(STATUS.SERVER_ERROR.code)
@@ -114,4 +116,5 @@ export class HabitlogController {
   }
 }
 
-export const habitLogs_controller = Container.get(HabitlogController);
+
+export const habitLogs_controller = Container.get(HabitlogController)

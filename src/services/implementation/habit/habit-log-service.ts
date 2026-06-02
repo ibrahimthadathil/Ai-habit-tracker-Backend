@@ -72,6 +72,8 @@ export class HabitLog {
   async getDaysrange(data: { start: string; end: string }, userId: string) {
     try {
       const { end, start } = data;
+      console.log(data,userId);
+      
       const logs = await this.habitLogRepo.getAllHabit({
         userId,
         completedDate: { $gte: start, $lte: end },

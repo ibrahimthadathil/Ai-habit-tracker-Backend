@@ -19,7 +19,7 @@ export class HabitController {
       else
         res
           .status(STATUS.BAD_REQUEST.code)
-          .json({ message: STATUS.BAD_REQUEST.message });
+          .json({ success, message: STATUS.BAD_REQUEST.message });
     } catch (error) {
       res
         .status(STATUS.SERVER_ERROR.code)
@@ -43,47 +43,15 @@ export class HabitController {
   }
 
   async updateHabitNote(req: AuthRequest, res: Response) {
-    try {
+    try {      
       const habitId = req.params.id as string;
-      const { success, message, updatedHabit } =
-        await this.habitService.updateHabit(
-          habitId,
-          req.user!._id.toString(),
-          req.body,
-        );
-      if (success)
-        res.status(STATUS.SUCCESS.code).json({ updatedHabit, success });
-      else res.status(STATUS.BAD_REQUEST.code).json({ success, message });
-    } catch (error) {
-      res
-        .status(STATUS.SERVER_ERROR.code)
-        .json({ message: STATUS.SERVER_ERROR.message });
-    }
-  }
-
-  async deleteHabit(req: AuthRequest, res: Response) {
-    try {
-      const habitId = req.params.id as string;
-      const { message, success } = await this.habitService.deleteHabit(
-        req.user!._id.toString(),
+      const {success,message,updatedHabit} = await this.habitService.updateHabit(
         habitId,
+        req.user!._id.toString(),
+        req.body,
       );
-      if (success) res.status(STATUS.SUCCESS.code).json({ success, message });
-      else res.status(STATUS.NOT_FOUND.code).json({ success, message });
-    } catch (error) {
-      res
-        .status(STATUS.SERVER_ERROR.code)
-        .json({ message: STATUS.SERVER_ERROR.message });
-    }
-  }
-  async updateArchive(req: AuthRequest, res: Response) {
-    try {
-      const habitId = req.params.id as string;
-      const { success, message, updatedHabit } =
-        await this.habitService.archiveHabit(req.user!._id.toString(), habitId);
-      if (success)
-        res.status(STATUS.SUCCESS.code).json({ success, updatedHabit });
-      else res.status(STATUS.BAD_REQUEST.code).json({ success, message });
+      if(success) res.status(STATUS.SUCCESS.code).json({updatedHabit})
+        else res.status(STATUS.BAD_REQUEST.code).json({message})
     } catch (error) {
       res
         .status(STATUS.SERVER_ERROR.code)
@@ -91,20 +59,43 @@ export class HabitController {
     }
   }
 
-  async reOrderHabits(req: AuthRequest, res: Response) {
+  async deleteHabit(req:AuthRequest,res:Response){
     try {
-      const { message, success } = await this.habitService.re_orderHabits(
-        req.body,
-        req.user!._id.toString(),
-      );
-      if (success) res.status(STATUS.SUCCESS.code).json({ success, message });
-      else res.status(STATUS.BAD_REQUEST.code).json({ success, message });
+        const habitId = req.params.id as string        
+        const {message,success} = await this.habitService.deleteHabit(req.user!._id.toString(),habitId)
+        if(success)  res.status(STATUS.SUCCESS.code).json({success,message})
+            else  res.status(STATUS.NOT_FOUND.code).json({success,message})
     } catch (error) {
-      res
+         res
         .status(STATUS.SERVER_ERROR.code)
         .json({ message: STATUS.SERVER_ERROR.message });
     }
   }
+  async updateArchive(req:AuthRequest,res:Response){
+    try{
+        const habitId = req.params.id as string
+        const {success,message,updatedHabit} = await this.habitService.archiveHabit(req.user!._id.toString(),habitId)
+        if(success) res.status(STATUS.SUCCESS.code).json({success,updatedHabit})
+        else res.status(STATUS.BAD_REQUEST.code).json({success,message})    
+    } catch(error){
+         res
+        .status(STATUS.SERVER_ERROR.code)
+        .json({ message: STATUS.SERVER_ERROR.message });
+    }
+  }
+
+  async reOrderHabits(req:AuthRequest,res:Response){
+    try{
+        const {message,success} = await this.habitService.re_orderHabits(req.body,req.user!._id.toString()) 
+        if(success) res.status(STATUS.SUCCESS.code).json({message})
+        else res.status(STATUS.BAD_REQUEST.code).json({message}) 
+    }catch(error){
+         res
+        .status(STATUS.SERVER_ERROR.code)
+        .json({ message: STATUS.SERVER_ERROR.message });
+    }
+    }
+  
 }
 
 export const habit_controller = Container.get(HabitController);
