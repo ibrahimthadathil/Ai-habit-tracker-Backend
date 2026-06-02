@@ -15,9 +15,9 @@ export class UserController {
         const { success, message, updatedUser } =
           await this.userService.userProfile(data, req.user?._id.toString());
         if (success)
-          return res.status(STATUS.SUCCESS.code).json({ success, updatedUser });
+          return res.status(STATUS.SUCCESS.code).json({  updatedUser });
         else
-          return res.status(STATUS.BAD_REQUEST.code).json({ success, message });
+          return res.status(STATUS.BAD_REQUEST.code).json({  message });
       } else
         return res
           .status(STATUS.UNAUTHORIZED.code)

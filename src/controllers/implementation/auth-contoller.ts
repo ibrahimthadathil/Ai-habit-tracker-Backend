@@ -13,8 +13,8 @@ export class AuthController implements IAuthControl {
       const { success, message, token, user } =
         await this.authService.userRegister(req.body);
       if (success)
-        res.status(STATUS.CREATED.code).json({ success, message, token, user });
-      else res.status(STATUS.BAD_REQUEST.code).json({ message, success });
+        res.status(STATUS.CREATED.code).json({  message, token, user });
+      else res.status(STATUS.BAD_REQUEST.code).json({ message });
     } catch (error) {
       res
         .status(STATUS.SERVER_ERROR.code)
@@ -29,9 +29,9 @@ export class AuthController implements IAuthControl {
       if (success)
         return res
           .status(STATUS.SUCCESS.code)
-          .json({ user, success, token, message: "user Logged in" });
+          .json({ user,  token, message: "user Logged in" });
       else
-        return res.status(STATUS.BAD_REQUEST.code).json({ success, message });
+        return res.status(STATUS.BAD_REQUEST.code).json({  message });
     } catch (err) {
       res
         .status(STATUS.SERVER_ERROR.code)

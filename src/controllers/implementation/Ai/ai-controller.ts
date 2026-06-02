@@ -27,7 +27,7 @@ export class AIController {
         req.user!._id.toString(),
       );
       if (success)
-        res.status(STATUS.SUCCESS.code).json({ success, suggestions });
+        res.status(STATUS.SUCCESS.code).json({  suggestions });
       else res.status(STATUS.BAD_REQUEST.code);
     } catch (error) {
       res
@@ -41,8 +41,8 @@ export class AIController {
         req.body,
         req.user!._id.toString(),
       );
-      if (success) res.status(STATUS.SUCCESS.code).json({ success, content });
-      else res.status(STATUS.NOT_FOUND.code).json({ success, message });
+      if (success) res.status(STATUS.SUCCESS.code).json({  content });
+      else res.status(STATUS.NOT_FOUND.code).json({  message });
     } catch (error) {
       res
         .status(STATUS.SERVER_ERROR.code)
@@ -55,7 +55,7 @@ export class AIController {
         req.body,
         req.user!._id.toString(),
       );
-      if (success) res.status(STATUS.SUCCESS.code).json({ success, content });
+      if (success) res.status(STATUS.SUCCESS.code).json({  content });
       else throw new Error(message);
     } catch (error) {
       res

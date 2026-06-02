@@ -16,7 +16,7 @@ export class HabitlogController {
           { habitId, date },
           req.user!._id.toString(),
         );
-      if (success) res.status(STATUS.CREATED.code).json({ success, log });
+      if (success) res.status(STATUS.CREATED.code).json({ log });
       else res.status(STATUS.NOT_FOUND.code).json({ message, success });
     } catch (error) {
       res
@@ -32,8 +32,8 @@ export class HabitlogController {
         { habitId, date },
         req.user!._id.toString(),
       );
-      if (success) res.status(STATUS.CREATED.code).json({ success, message });
-      else res.status(STATUS.BAD_REQUEST.code).json({ message, success });
+      if (success) res.status(STATUS.CREATED.code).json({ message });
+      else res.status(STATUS.BAD_REQUEST.code).json({ message });
     } catch (error) {
       res
         .status(STATUS.SERVER_ERROR.code)
@@ -44,8 +44,8 @@ export class HabitlogController {
     try {
       const { success, logs, message } =
         await this.habitLogService.getTodayDate(req.user!._id.toString());
-      if (success) res.status(STATUS.SUCCESS.code).json( { success, logs })
-      else res.status(STATUS.BAD_REQUEST.code).json( { success, message })
+      if (success) res.status(STATUS.SUCCESS.code).json({ logs });
+      else res.status(STATUS.BAD_REQUEST.code).json({ message });
     } catch (err) {
       res
         .status(STATUS.SERVER_ERROR.code)
@@ -61,8 +61,8 @@ export class HabitlogController {
           { start, end },
           req.user!._id.toString(),
         );
-      if (success) return { success, logs };
-      else return { success, message };
+      if (success) res.status(STATUS.SUCCESS.code).json({ logs });
+      else res.status(STATUS.BAD_REQUEST.code).json({ message });
     } catch (error) {
       res
         .status(STATUS.SERVER_ERROR.code)
@@ -114,5 +114,4 @@ export class HabitlogController {
   }
 }
 
-
-export const habitLogs_controller = Container.get(HabitlogController)
+export const habitLogs_controller = Container.get(HabitlogController);
