@@ -11,7 +11,7 @@ export class HabitRepository extends BaseRepository<IHabit> {
   }
 
   async findHabit(filter: QueryFilter<IHabit>, sort?: Record<string, 1 | -1>) {
-    let query =  HabitModal.findOne(filter);
+    let query = HabitModal.findOne(filter);
     if (sort) query = query.sort(sort);
     return await query;
   }
@@ -28,6 +28,9 @@ export class HabitRepository extends BaseRepository<IHabit> {
     return await HabitModal.findOneAndUpdate(
       { _id: habitId, userId },
       { isArchived: archived },
+      {
+        new: true,
+      },
     );
   }
   async getAllHabit(filter: Partial<IHabit>) {

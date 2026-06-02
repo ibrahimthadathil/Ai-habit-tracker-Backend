@@ -75,8 +75,8 @@ export class HabitController {
     try{
         const habitId = req.params.id as string
         const {success,message,updatedHabit} = await this.habitService.archiveHabit(req.user!._id.toString(),habitId)
-        if(success) res.status(STATUS.SUCCESS.code).json({success,updatedHabit})
-        else res.status(STATUS.BAD_REQUEST.code).json({success,message})    
+        if(success) res.status(STATUS.SUCCESS.code).json({updatedHabit})
+        else res.status(STATUS.BAD_REQUEST.code).json({message})    
     } catch(error){
          res
         .status(STATUS.SERVER_ERROR.code)

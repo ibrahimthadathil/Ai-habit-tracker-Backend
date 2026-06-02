@@ -50,7 +50,7 @@ export class AIController {
     }
   }
   async getChatAnalysis(req: AuthRequest, res: Response) {
-    try {
+    try {      
       const { success, content, message } = await this.aiService.chatAnalysis(
         req.body,
         req.user!._id.toString(),

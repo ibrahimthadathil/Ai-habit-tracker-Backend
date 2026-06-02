@@ -157,13 +157,15 @@ export class AiService {
       if (!question) return { success: false, message: "Question is required" };
       const habits = await this.HabitRepo.getAllHabit({
         userId,
-        isArchived: true,
+        isArchived: false,
       });
+      
       const days = lastNDays(30);
       const logs = await this.HabitLogRepo.getAllHabit({
         userId,
         completedDate: { $gte: days[0], $lte: days[days.length - 1] },
       });
+      
       const context = habits
         .map((h) => {
           const hlogs = logs.filter((l) => String(l.habitId) === String(h._id));
