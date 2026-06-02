@@ -21,7 +21,7 @@ export class HabitLogRepository extends BaseRepository<IHabitLog> {
     return await HabitLogmodal.findOneAndUpdate(
       { userId, habitId, completedDate },
       { $setOnInsert: { userId, habitId, completedDate } },
-      { upsert: true, new: true },
+      { upsert: true, returnDocument: "after" },
     );
   }
   async findOneAndDelete(
