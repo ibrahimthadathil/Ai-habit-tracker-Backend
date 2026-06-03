@@ -10,6 +10,7 @@ export const protect = async (
   next: NextFunction,
 ) => {
   try {
+    
     let token;
     if (
       req.headers.authorization &&

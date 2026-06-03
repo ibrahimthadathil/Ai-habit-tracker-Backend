@@ -6,6 +6,10 @@ import cors from "cors";
 import { errorHandler, notFound } from "@/middleware/errorHandler";
 import authRoute from "./routes/user/authRoutes";
 import userRoutes from "./routes/user/userRoutes";
+import habitRoute from "./routes/habit/habitRouter";
+import habitRoutes from "./routes/habit/habitRouter";
+import logRoutes from "./routes/habit/habitLogsRoute";
+import aiRoutes from "./routes/AI-insights/ai-routes";
 const app = express();
 dotenv.config();
 
@@ -22,7 +26,9 @@ app.use(express.json({limit:"1mb"}))
 // })
 app.use('/api/auth',authRoute)
 app.use('/api/user',userRoutes)
-
+app.use('/api/habits',habitRoutes)
+app.use('/api/logs',logRoutes)
+app.use('/api/ai',aiRoutes)
 app.use(notFound)
 app.use(errorHandler)
 const PORT = process.env.PORT || 4001;

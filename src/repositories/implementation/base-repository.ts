@@ -23,7 +23,7 @@ export abstract class BaseRepository<
     return await query.exec(); //for ensure
   }
   async update(id: string, data: Partial<T>): Promise<T | null> {
-    return this.model.findByIdAndUpdate(id, data, { new: true });
+    return this.model.findByIdAndUpdate(id, data,  { returnDocument: "after" } );
   }
 
   async findByField(field: any, value: string) {
@@ -33,4 +33,10 @@ export abstract class BaseRepository<
   async delete(id: string): Promise<void | any> {
     return this.model.findByIdAndDelete(id);
   }
+
+    async getAllWithFilter(filter:any,sort?:Record<string,1|-1>){
+        const query= this.model.find(filter)
+        if(sort) query.sort(sort)
+        return await query
+      }
 }
